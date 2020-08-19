@@ -10,10 +10,18 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
-import java.util.Objects;
+
 
 @Entity
-@Table(name = "question")
+@Table(name = "question", schema = "public")
+@NamedQueries({
+        @NamedQuery(name="allQuestionsByUser",query="select q from QuestionEntity q where q.user.id = :user_id"),
+        @NamedQuery(name = "questionByUuid", query = "select q from QuestionEntity q where q.uuid "
+                + "= :uuid"),
+
+}
+
+)
 public class QuestionEntity {
     @Id
     @Column(name = "id")
