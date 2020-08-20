@@ -10,6 +10,7 @@ import com.upgrad.quora.service.exception.AuthorizationFailedException;
 import com.upgrad.quora.service.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +27,7 @@ public class QuestionController {
 
     @RequestMapping(method = RequestMethod.POST, path = "/question/create")
     public ResponseEntity<QuestionResponse> createQuestion(@RequestBody QuestionRequest questionRequest,
-                                                           @RequestHeader("authorization")
-                                                                   String authorization)
+                                                           @RequestHeader("authorization") String authorization)
             throws AuthorizationFailedException, UserNotFoundException {
 
         QuestionEntity questionEntity = new QuestionEntity();
@@ -35,11 +35,9 @@ public class QuestionController {
         questionEntity.setUuid(UUID.randomUUID().toString());
         questionEntity.setContent(questionRequest.getContent());
         questionEntity.setDate(ZonedDateTime.now());
-
         QuestionEntity createQuestionEntity = questionService.createQuestion(questionEntity, authorization);
         QuestionResponse questionResponse = new QuestionResponse().id(createQuestionEntity.getUuid()).status("Question Successfully Added");
         return new ResponseEntity<QuestionResponse>(questionResponse, HttpStatus.CREATED);
-
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/question/all")
@@ -47,8 +45,6 @@ public class QuestionController {
             throws AuthorizationFailedException, UserNotFoundException {
         List<QuestionEntity> questionEntity = questionService.getAllQuestion(authorization);
         return new ResponseEntity<List<QuestionEntity>>(questionEntity, HttpStatus.OK);
-
-
     }
 
 
@@ -57,7 +53,7 @@ public class QuestionController {
             @PathVariable("userId") String userId,
             @RequestHeader("authorization") String authorization)
             throws AuthorizationFailedException, UserNotFoundException {
-        String accessToken = AuthTokenParser.parseAuthToken(authorization) {
+        String accessToken = AuthTokenParser.parseAuthToken(authorization); {
             List<QuestionEntity> questionEntityList = questionService.getAllQuestionByUser(accessToken, userId)
         }
     }
