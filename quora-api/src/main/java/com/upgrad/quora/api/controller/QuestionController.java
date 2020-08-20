@@ -1,5 +1,6 @@
 package com.upgrad.quora.api.controller;
 
+<<<<<<< HEAD
 import com.upgrad.quora.api.model.QuestionRequest;
 import com.upgrad.quora.api.model.QuestionResponse;
 import com.upgrad.quora.service.business.QuestionService;
@@ -25,9 +26,9 @@ public class QuestionController {
 
     @RequestMapping(method = RequestMethod.POST, path = "/question/create")
     public ResponseEntity<QuestionResponse> createQuestion(@RequestBody QuestionRequest questionRequest,
-                                                       @RequestHeader("authorization")
-                                                        String authorization)
-         throws AuthorizationFailedException, UserNotFoundException {
+                                                           @RequestHeader("authorization")
+                                                                   String authorization)
+            throws AuthorizationFailedException, UserNotFoundException {
 
         QuestionEntity questionEntity = new QuestionEntity();
         //adding data to the entity object for db
@@ -39,16 +40,25 @@ public class QuestionController {
         QuestionResponse questionResponse = new QuestionResponse().id(createQuestionEntity.getUuid()).status("Question Successfully Added");
         return new ResponseEntity<QuestionResponse>(questionResponse, HttpStatus.CREATED);
 
- }
+    }
 
-    @RequestMapping(method = RequestMethod.GET, path="/question/all")
-    public ResponseEntity<List<QuestionEntity>> getAllQuestion(@RequestHeader ("authorization") String authorization)
-            throws AuthorizationFailedException, UserNotFoundException
-    {
-         List<QuestionEntity> questionEntity = questionService.getAllQuestion(authorization);
-         return new ResponseEntity<List<QuestionEntity>>(questionEntity, HttpStatus.OK);
-
+    @RequestMapping(method = RequestMethod.GET, path = "/question/all")
+    public ResponseEntity<List<QuestionEntity>> getAllQuestion(@RequestHeader("authorization") String authorization)
+            throws AuthorizationFailedException, UserNotFoundException {
+        List<QuestionEntity> questionEntity = questionService.getAllQuestion(authorization);
+        return new ResponseEntity<List<QuestionEntity>>(questionEntity, HttpStatus.OK);
 
 
+    }
+
+
+    @RequestMapping(method = RequestMethod.GET, path = "question/all/{userId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity getAllQuestionsByUser(
+            @PathVariable("userId") String userId,
+            @RequestHeader("authorization") String authorization)
+            throws AuthorizationFailedException, UserNotFoundException {
+        String accessToken = AuthTokenParser.parseAuthToken(authorization) {
+            List<QuestionEntity> questionEntityList = questionService.getAllQuestionByUser(accessToken, userId)
+        }
     }
 }
