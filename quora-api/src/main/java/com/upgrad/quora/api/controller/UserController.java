@@ -13,8 +13,6 @@ import com.upgrad.quora.service.exception.AuthenticationFailedException;
 import com.upgrad.quora.service.exception.SignOutRestrictedException;
 import com.upgrad.quora.service.exception.SignUpConfictException;
 import com.upgrad.quora.service.exception.SignUpRestrictedException;
-import java.util.Base64;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Base64;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/")
@@ -75,8 +76,7 @@ public class UserController {
   }
   @RequestMapping(method= RequestMethod.POST, path="/user/signout", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
   public ResponseEntity<SignoutResponse> signOut(@RequestHeader("authorization") final String authorization) throws SignOutRestrictedException {
-    String [] bearerToken = authorization.split("Bearer ");
-    UserEntity signoutUser = signOutBusinessService.signOut(bearerToken[1]);
+    UserEntity signoutUser = signOutBusinessService.signOut(authorization);
     SignoutResponse signoutResponse = new SignoutResponse().id(signoutUser.getUuid()).message("SIGNED OUT SUCCESSFULLY");
     return new ResponseEntity<SignoutResponse>(signoutResponse, HttpStatus.OK);
   }
