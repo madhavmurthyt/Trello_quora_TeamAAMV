@@ -23,6 +23,7 @@ public class QuestionDao {
         entityManager.remove(questionEntity);
         return questionEntity;
      }
+
      public QuestionEntity getQuestionByUUID(String uuid) {
         try {
             return entityManager.createNamedQuery("questionByUuid", QuestionEntity.class).setParameter(
@@ -32,4 +33,5 @@ public class QuestionDao {
             return null;
         }
     }
+
 }
