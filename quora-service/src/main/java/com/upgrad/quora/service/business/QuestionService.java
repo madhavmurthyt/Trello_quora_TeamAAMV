@@ -64,4 +64,12 @@ public class QuestionService {
         return deletedQuestion;
     }
 
+    public QuestionEntity getQuestionByUUID(final String questionUUID) throws InvalidQuestionException{
+        QuestionEntity questionEntity = questionDao.getQuestionByUUID(questionUUID);
+        if(questionEntity == null){
+            throw new InvalidQuestionException("QUES-001","The question entered is invalid");
+        }
+        return questionEntity;
+    }
+
 }
