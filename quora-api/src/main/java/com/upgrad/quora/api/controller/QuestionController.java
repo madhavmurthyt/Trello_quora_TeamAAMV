@@ -1,5 +1,6 @@
 package com.upgrad.quora.api.controller;
 
+import com.upgrad.quora.api.model.QuestionDeleteResponse;
 import com.upgrad.quora.service.business.QuestionService;
 import com.upgrad.quora.api.model.QuestionDetailsResponse;
 import com.upgrad.quora.service.entity.QuestionEntity;
@@ -30,4 +31,16 @@ public class QuestionController {
             }
         return new ResponseEntity<List>(questionDetailsResponse, HttpStatus.OK);
         }
+    @RequestMapping(method = RequestMethod.DELETE, path = "/question/delete/{questionId}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<QuestionDeleteResponse> deleteQuestion(
+            @PathVariable("questionId") String questionId,
+            @RequestHeader("authorization") String authorization)
+            throws AuthorizationFailedException, InvalidQuestionException {
+
+        QuestionEntity deletedQuestion = questionService.deleteQuestion(questionId,authorization);
+        QuestionDeleteResponse questionDeleteResponse =
+                new QuestionDeleteResponse().id(deletedQuestion.getUuid()).status("QUESTION DELETED");
+        return new ResponseEntity<>(questionDeleteResponse, HttpStatus.OK);
+    }
 }
