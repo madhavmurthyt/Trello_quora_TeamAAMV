@@ -29,7 +29,7 @@ public class QuestionController {
             @RequestHeader("authorization") String authorization)
             throws AuthorizationFailedException, UserNotFoundException {
 
-        List<QuestionEntity> questionList = questionService.getAllQuestionsByUser(userId,authorization);
+	    List<QuestionEntity> questionList = questionService.getAllQuestionsByUser(userId,authorization);
         List<QuestionDetailsResponse> qDetailsList = new ArrayList<>();
         questionList.forEach((q) -> {
             QuestionDetailsResponse questionDetailsResponse = new QuestionDetailsResponse();
@@ -41,6 +41,7 @@ public class QuestionController {
     } 
     
     
+
     @RequestMapping(method = RequestMethod.DELETE, path = "/question/delete/{questionId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<QuestionDeleteResponse> deleteQuestion(
