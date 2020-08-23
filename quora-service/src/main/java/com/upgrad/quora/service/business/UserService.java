@@ -1,18 +1,19 @@
 package com.upgrad.quora.service.business;
 
+
 import com.upgrad.quora.service.dao.UserDao;
 import com.upgrad.quora.service.entity.UserAuthTokenEntity;
 import com.upgrad.quora.service.entity.UserEntity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.upgrad.quora.service.exception.AuthorizationFailedException;
 import com.upgrad.quora.service.exception.UserNotFoundException;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
-    @Autowired UserDao userDao;
+    @Autowired
+    UserDao userDao;
 
    // public UserEntity getImage(final String Uuid, final String authorization) throws AuthorizationFailedException, UserNotFoundException {
 
