@@ -1,11 +1,11 @@
 package com.upgrad.quora.api.controller;
 
 import com.upgrad.quora.api.model.QuestionDeleteResponse;
-import com.upgrad.quora.service.business.QuestionService;
 import com.upgrad.quora.api.model.QuestionDetailsResponse;
+import com.upgrad.quora.service.business.QuestionService;
 import com.upgrad.quora.service.entity.QuestionEntity;
-import com.upgrad.quora.service.entity.UserEntity;
 import com.upgrad.quora.service.exception.AuthorizationFailedException;
+import com.upgrad.quora.service.exception.InvalidQuestionException;
 import com.upgrad.quora.service.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

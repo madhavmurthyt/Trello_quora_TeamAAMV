@@ -41,7 +41,7 @@ public class QuestionService {
         return questionDao.getAllQuestionsByUser(userEntity.getId());
     }
     @Transactional(propagation = Propagation.REQUIRED)
-    public QuestionEntity deleteQuestion(String accessToken, String uuid)
+    public QuestionEntity deleteQuestion(String uuid,String accessToken)
             throws AuthorizationFailedException, InvalidQuestionException {
         UserAuthTokenEntity userAuth = userDao.getUserAuthToken(accessToken);
         if (userAuth == null) {
