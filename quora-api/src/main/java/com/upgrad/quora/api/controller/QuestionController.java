@@ -22,15 +22,25 @@ public class QuestionController {
     @Autowired
     private QuestionService questionService;
 
-    @RequestMapping(method = RequestMethod.GET, path="question/all/{userId}",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List> getAllQuestionsByUser( @PathVariable("userId") String userId,  @RequestHeader("authorization") String authorization)  throws AuthorizationFailedException, UserNotFoundException {
-            final List<QuestionEntity> questionEntity = questionService.getAllQuestionsByUser(userId, authorization);
-            List<QuestionDetailsResponse> questionDetailsResponse = new ArrayList<QuestionDetailsResponse>();
-            for (QuestionEntity questionEntity1: questionEntity) {
-                 questionDetailsResponse.add(new QuestionDetailsResponse().id(questionEntity1.getUuid()).content(questionEntity1.getContent()));
-            }
-        return new ResponseEntity<List>(questionDetailsResponse, HttpStatus.OK);
-        }
+    @RequestMapping(method = RequestMethod.GET, path = "/question/all/{userId}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<QuestionDetailsResponse>> getAllQuestionsByUser(
+            @PathVariable("userId") String userId,
+            @RequestHeader("authorization") String authorization)
+            throws AuthorizationFailedException, UserNotFoundException {
+
+        List<QuestionEntity> questionList = questionService.getAllQuestionsByUser(userId,authorization);
+        List<QuestionDetailsResponse> qDetailsList = new ArrayList<>();
+        questionList.forEach((q) -> {
+            QuestionDetailsResponse questionDetailsResponse = new QuestionDetailsResponse();
+            questionDetailsResponse.content(q.getContent());
+            questionDetailsResponse.id(q.getUuid());
+            qDetailsList.add(questionDetailsResponse);
+        });
+        return new ResponseEntity<>(qDetailsList, HttpStatus.OK);
+    } 
+    
+    
     @RequestMapping(method = RequestMethod.DELETE, path = "/question/delete/{questionId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<QuestionDeleteResponse> deleteQuestion(
