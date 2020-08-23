@@ -1,0 +1,18 @@
+-------------------------------------------------------------------------------
+Test set: com.upgrad.quora.api.controller.QuestionControllerTest
+-------------------------------------------------------------------------------
+Tests run: 16, Failures: 2, Errors: 1, Skipped: 0, Time elapsed: 5.044 s <<< FAILURE! - in com.upgrad.quora.api.controller.QuestionControllerTest
+createQuestionWithSignedOutUser(com.upgrad.quora.api.controller.QuestionControllerTest)  Time elapsed: 0.033 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<403> but was:<400>
+	at com.upgrad.quora.api.controller.QuestionControllerTest.createQuestionWithSignedOutUser(QuestionControllerTest.java:39)
+
+createQuestionWithNonExistingAccessToken(com.upgrad.quora.api.controller.QuestionControllerTest)  Time elapsed: 0.018 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<403> but was:<400>
+	at com.upgrad.quora.api.controller.QuestionControllerTest.createQuestionWithNonExistingAccessToken(QuestionControllerTest.java:31)
+
+editNonExistingQuestion(com.upgrad.quora.api.controller.QuestionControllerTest)  Time elapsed: 0.039 s  <<< ERROR!
+org.springframework.web.util.NestedServletException: Request processing failed; nested exception is java.lang.NullPointerException
+	at com.upgrad.quora.api.controller.QuestionControllerTest.editNonExistingQuestion(QuestionControllerTest.java:93)
+Caused by: java.lang.NullPointerException
+	at com.upgrad.quora.api.controller.QuestionControllerTest.editNonExistingQuestion(QuestionControllerTest.java:93)
+
