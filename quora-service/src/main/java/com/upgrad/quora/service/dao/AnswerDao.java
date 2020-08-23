@@ -16,7 +16,7 @@ public class AnswerDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public AnswerEntity createAnswer(AnswerEntity answerEntity){
+    public AnswerEntity createAnswer(AnswerEntity answerEntity) {
         entityManager.persist(answerEntity);
         return answerEntity;
     }
@@ -26,10 +26,10 @@ public class AnswerDao {
     }
 
 
-    public UserAuthTokenEntity getUserAuthToken(final String accesstoken){
-        try{
+    public UserAuthTokenEntity getUserAuthToken(final String accesstoken) {
+        try {
             return entityManager.createNamedQuery("userAuthTokenByAccessToken", UserAuthTokenEntity.class).setParameter("accessToken", accesstoken).getSingleResult();
-        } catch (NoResultException nre){
+        } catch (NoResultException nre) {
             return null;
         }
     }
@@ -37,7 +37,7 @@ public class AnswerDao {
     public AnswerEntity getAnswer(final String uuId) {
         try {
             return entityManager.createNamedQuery("answerById", AnswerEntity.class).setParameter("uuid", uuId).getSingleResult();
-        }catch (NoResultException nre) {
+        } catch (NoResultException nre) {
             return null;
         }
     }
@@ -51,7 +51,7 @@ public class AnswerDao {
         }
     }
 
-    public void deleteAnswer(AnswerEntity answerEntity){
+    public void deleteAnswer(AnswerEntity answerEntity) {
         entityManager.remove(answerEntity);
     }
 

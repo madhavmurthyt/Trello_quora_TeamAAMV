@@ -30,7 +30,7 @@ public class AnswerService {
     QuestionDao questionDao;
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public AnswerEntity createAnswer(AnswerEntity answerEntity){
+    public AnswerEntity createAnswer(AnswerEntity answerEntity) {
         AnswerEntity answer = answerDao.createAnswer(answerEntity);
         return answer;
     }
@@ -38,30 +38,31 @@ public class AnswerService {
 
     public UserAuthTokenEntity getUserAuthToken(final String accesstoken) throws AuthorizationFailedException {
         UserAuthTokenEntity userAuthToken = answerDao.getUserAuthToken(accesstoken);
-        if(userAuthToken == null)
-        {
-            throw new AuthorizationFailedException("ATHR-001","User has not signed in");
+        if (userAuthToken == null) {
+            throw new AuthorizationFailedException("ATHR-001", "User has not signed in");
         }
         final ZonedDateTime signOutUserTime = userAuthToken.getLogoutAt();
 
-        if(signOutUserTime!=null && userAuthToken!=null)
-        {
-            throw new AuthorizationFailedException("ATHR-002","User is signed out.Sign in first to get user details");
+        if (signOutUserTime != null && userAuthToken != null) {
+            throw new AuthorizationFailedException("ATHR-002", "User is signed out.Sign in first to get user details");
         }
 
         return userAuthToken;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public AnswerEntity updateAnswer(final String uuId,final String content, final String authorization) throws AuthorizationFailedException, AnswerNotFoundException {
+    public AnswerEntity updateAnswer(final String uuId, final String content, final String authorization) throws AuthorizationFailedException, AnswerNotFoundException {
 
 
         UserAuthTokenEntity userAuthTokenEntity = userDao.getUserAuthToken(authorization);
         if (userAuthTokenEntity == null) throw new AuthorizationFailedException("ATHR-001", "User has not signed in");
-        if (userAuthTokenEntity.getLogoutAt()!=null) throw new AuthorizationFailedException("ATHR-002","User is signed out. Sign in first to edit an answer");
+        if (userAuthTokenEntity.getLogoutAt() != null)
+            throw new AuthorizationFailedException("ATHR-002", "User is signed out. Sign in first to edit an answer");
 
-        if(answerDao.getAnswer(uuId) == null) throw new AnswerNotFoundException("ANS-001","Entered answer uuid does not exist");
-        if(!userAuthTokenEntity.getUser().getUuid().equalsIgnoreCase(answerDao.getAnswer(uuId).getUser().getUuid()))  throw new AuthorizationFailedException("ATHR-003", "Only the answer owner can edit the answer");
+        if (answerDao.getAnswer(uuId) == null)
+            throw new AnswerNotFoundException("ANS-001", "Entered answer uuid does not exist");
+        if (!userAuthTokenEntity.getUser().getUuid().equalsIgnoreCase(answerDao.getAnswer(uuId).getUser().getUuid()))
+            throw new AuthorizationFailedException("ATHR-003", "Only the answer owner can edit the answer");
 
         AnswerEntity answerEntity = new AnswerEntity();
         answerEntity.setId(answerDao.getAnswer(uuId).getId());
@@ -94,18 +95,18 @@ public class AnswerService {
 
     public AnswerEntity getAnswerByUUID(final String questionUUID) throws AnswerNotFoundException {
         AnswerEntity answerEntity = answerDao.getAnswer(questionUUID);
-        if(answerEntity == null){
-            throw new AnswerNotFoundException("ANS-001","Entered answer uuid does not exist");
+        if (answerEntity == null) {
+            throw new AnswerNotFoundException("ANS-001", "Entered answer uuid does not exist");
         }
         return answerEntity;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void deleteAnswer(AnswerEntity answerEntity,UserAuthTokenEntity userAuthTokenEntity) throws AuthorizationFailedException{
-        if ((answerEntity.getUser().getId() == userAuthTokenEntity.getUser().getId()) || userAuthTokenEntity.getUser().getRole().equals("admin") ) {
+    public void deleteAnswer(AnswerEntity answerEntity, UserAuthTokenEntity userAuthTokenEntity) throws AuthorizationFailedException {
+        if ((answerEntity.getUser().getId() == userAuthTokenEntity.getUser().getId()) || userAuthTokenEntity.getUser().getRole().equals("admin")) {
             answerDao.deleteAnswer(answerEntity);
-        }else {
-            throw new AuthorizationFailedException("ATHR-003","Only the answer owner or admin can delete the answer");
+        } else {
+            throw new AuthorizationFailedException("ATHR-003", "Only the answer owner or admin can delete the answer");
         }
     }
 }

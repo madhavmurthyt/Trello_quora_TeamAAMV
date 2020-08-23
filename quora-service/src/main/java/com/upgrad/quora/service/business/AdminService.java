@@ -23,8 +23,10 @@ public class AdminService {
         UserAuthTokenEntity userAuthTokenEntity = userDao.getUserAuthToken(authorization);
 
         if (userAuthTokenEntity == null) throw new AuthorizationFailedException("ATHR-001", "User has not signed in");
-        if(!userAuthTokenEntity.getUser().getRole().equalsIgnoreCase("admin")) throw new AuthorizationFailedException("ATHR-003", "Unauthorized Access, Entered user is not an admin");
-        if (userAuthTokenEntity.getLogoutAt() != null) throw new AuthorizationFailedException("ATHR-002", "User is signed out");
+        if (!userAuthTokenEntity.getUser().getRole().equalsIgnoreCase("admin"))
+            throw new AuthorizationFailedException("ATHR-003", "Unauthorized Access, Entered user is not an admin");
+        if (userAuthTokenEntity.getLogoutAt() != null)
+            throw new AuthorizationFailedException("ATHR-002", "User is signed out");
 
         UserEntity userEntity = userDao.getUser(userUuId);
         if (userEntity == null) throw new UserNotFoundException("USR-001", "User with entered uuid does not exist");

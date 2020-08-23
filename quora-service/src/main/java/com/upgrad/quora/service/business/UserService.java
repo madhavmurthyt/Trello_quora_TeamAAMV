@@ -15,19 +15,20 @@ public class UserService {
     @Autowired
     UserDao userDao;
 
-   // public UserEntity getImage(final String Uuid, final String authorization) throws AuthorizationFailedException, UserNotFoundException {
+    // public UserEntity getImage(final String Uuid, final String authorization) throws AuthorizationFailedException, UserNotFoundException {
 
-        public UserEntity getUser(final String userUuId, final String authorization) throws AuthorizationFailedException, UserNotFoundException {
-            UserEntity userEntity = userDao.getUser(userUuId);
+    public UserEntity getUser(final String userUuId, final String authorization) throws AuthorizationFailedException, UserNotFoundException {
+        UserEntity userEntity = userDao.getUser(userUuId);
 
-            if (userEntity == null) throw new UserNotFoundException("USR-001", "User with entered uuid does not exist");
+        if (userEntity == null) throw new UserNotFoundException("USR-001", "User with entered uuid does not exist");
 
-            UserAuthTokenEntity userAuthTokenEntity = userDao.getUserAuthToken(authorization);
-            if (userAuthTokenEntity == null) throw new AuthorizationFailedException("ATHR-001", "User not Signed in");
+        UserAuthTokenEntity userAuthTokenEntity = userDao.getUserAuthToken(authorization);
+        if (userAuthTokenEntity == null) throw new AuthorizationFailedException("ATHR-001", "User not Signed in");
 
-            if (userAuthTokenEntity.getLogoutAt()!=null) throw new AuthorizationFailedException("ATHR-002","User is signed out. Sign in first to get user details");
+        if (userAuthTokenEntity.getLogoutAt() != null)
+            throw new AuthorizationFailedException("ATHR-002", "User is signed out. Sign in first to get user details");
 
-            return userDao.getUser(userUuId);
-        }
+        return userDao.getUser(userUuId);
+    }
 
 }

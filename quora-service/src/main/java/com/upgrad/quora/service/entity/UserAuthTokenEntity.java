@@ -52,16 +52,16 @@ public class UserAuthTokenEntity implements Serializable {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getUuid() {
         return uuid;
     }
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public UserEntity getUser() {
