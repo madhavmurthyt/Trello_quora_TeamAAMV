@@ -58,13 +58,14 @@ public class AnswerController {
 
 
     @RequestMapping(method = RequestMethod.GET, path = "answer/all/{questionId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List> getAllAnswersForQuestion(@PathVariable("questionId") String questionId, @RequestHeader("authorization") String authorization) throws AuthorizationFailedException, InvalidQuestionException {
+    public ResponseEntity<List<AnswerDetailsResponse>> getAllAnswersForQuestion(@PathVariable("questionId") String questionId, @RequestHeader("authorization") String authorization) throws AuthorizationFailedException, InvalidQuestionException {
         final List<AnswerEntity> answerEntities = answerService.getAllAnswersToQuestion(questionId, authorization);
         List<AnswerDetailsResponse> answerDetailsResponses = new ArrayList<AnswerDetailsResponse>();
         for (AnswerEntity answerEntity : answerEntities) {
             answerDetailsResponses.add(new AnswerDetailsResponse().id(answerEntity.getUuid()).questionContent(answerEntity.getQuestion().getContent()).answerContent(answerEntity.getAns()));
         }
-        return new ResponseEntity<List>(answerDetailsResponses, HttpStatus.OK);
+        return new ResponseEntity<>(answerDetailsResponses, HttpStatus.OK);
+
     }
 
     @RequestMapping(method = RequestMethod.DELETE, path = "/answer/delete/{answerId}", produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE)
