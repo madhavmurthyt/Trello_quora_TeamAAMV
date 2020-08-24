@@ -72,10 +72,14 @@ public class QuestionController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/question/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<QuestionEntity>> getAllQuestion(@RequestHeader("authorization") String authorization)
+    public ResponseEntity<List<QuestionDetailsResponse>> getAllQuestion(@RequestHeader("authorization") String authorization)
             throws AuthorizationFailedException, UserNotFoundException {
-        List<QuestionEntity> questionEntity = questionService.getAllQuestion(authorization);
-        return new ResponseEntity<List<QuestionEntity>>(questionEntity, HttpStatus.OK);
+        List<QuestionEntity> questionEntities = questionService.getAllQuestion(authorization);
+        List<QuestionDetailsResponse> questionDetailsResponse = new ArrayList<QuestionDetailsResponse>();
+        for(QuestionEntity questionEntity : questionEntities) {
+            questionDetailsResponse.add(new QuestionDetailsResponse().id(questionEntity.getUuid()).content(questionEntity.getContent()));
+        }
+        return new ResponseEntity<List<QuestionDetailsResponse>>(questionDetailsResponse, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/question/edit/{questionId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
